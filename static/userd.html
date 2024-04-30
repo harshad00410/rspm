@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>complaint of user</title>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <link rel='stylesheet' href='adminlogin.css'>
+    
+</head>
+
+<body>
+
+    <section> 
+        <div class="forma">
+           
+        <div class="form-box">
+            
+            <div class="form-value">
+                <form  id="urdf" method="post" action="/upload4" >
+                     <h2>Check Complaint</h2>
+                    <div class="inputbox">  <input type="text" id="email" name="email" >
+                        <label>Username</label>
+                    </div>
+                    <div class="inputbox">
+                        <input type="number" id="phoneNumber" name="phoneNumber"  >
+                        <label >Mobile Number</label>
+
+                    </div>
+
+                    <div class="forget"> 
+                    </div> <button type="submit"  id="log" >Check</button>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+    </section>
+
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("log").addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent form submission
+            
+            validateForm();
+            document.getElementById("urdf").submit();
+        });
+    });
+
+    function validateForm() {
+        var email = document.getElementById("email").value;
+        var phoneNumber = document.getElementById("phoneNumber").value;
+        
+
+        var emailPattern = /^[a-zA-Z]+$/; // Basic email pattern
+        if (email === "") {
+            alert("Username should not be empty.");
+            return false;
+        }
+        if (!emailPattern.test(email)) {
+            alert("Please enter a valid username.");
+            return false;
+        }
+        if (phoneNumber=== "" || isNaN(phoneNumber)) {
+            alert("mobile number field should not be empty.");
+            return false;
+        }
+        if (phoneNumber.length !== 10) {
+            alert("Phone number must be 10 digits.");
+            return false;
+        }
+        
+
+        
+
+        // Login successful
+        alert("Login successful!");
+        return true;
+    }
+</script>
+</html>

@@ -1,0 +1,66 @@
+<html>
+    <head><title>Admin Home page</title>
+<style>
+    body{
+        margin:0;
+        height:100%;
+    }
+    .B {
+        text-align: center;
+    }
+    
+    .C {
+        text-align: center;
+    }
+</style>
+
+
+
+
+</head>
+
+<body>
+    <header style="background-color: orange; ">
+        <br>
+        <h1 style="text-align: center;">welcome</h1>
+
+        <nav>
+        <a href="/static/adminlogin.html" style="margin-left: 10px;"><b><button >HOME</button></b></a><br><br>
+        <form method="post" action="/upload6">
+        <input type="hidden" name="delete" value="0">
+        <input type="hidden" name="status">
+        <input type="hidden" name="sid">
+        <!-- <a href="must.html"><b style="margin-left: 5%;"><button style="background-color:rgb(231, 175, 80);">←Go back to login page</button></b></a> -->
+    </nav><br>
+
+
+        <hr>
+    </header>
+
+    <main>
+        <div class="B">
+            <img src="/static/gram.png" height="50%" width="50%" />
+        </div>
+        <div class="C">
+            <!-- <a href="">
+                <h1>complaint</h1>
+            </a> -->
+    </main>
+    <!-- <ul>
+        {% for row in data %}
+        <li>
+            {{ row[0] }} - {{ row[1] }} Display the columns you need 
+        </li>
+        {% endfor %}
+    </ul>-->
+
+    <footer style="background-color: mediumseagreen; margin-bottom:0; ">
+        <br>
+        <br>
+        <button type="submit" style="margin-left: 46% ;" >ShowComplaint</button></form>
+        <!-- <h1 style="text-align: center;">Here you can read all the complaint's</h1> -->
+        <br><br>
+    </footer>
+</body>
+
+</html>

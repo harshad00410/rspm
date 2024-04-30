@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Admin Login Form</title>
+    <!-- <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script> -->
+    <link rel='stylesheet' href='adminlogin.css'>
+    
+</head>
+
+<body>
+
+    <section>
+        <div class="forma">
+        <div class="form-box">
+            <div class="form-value">
+                <form  id="adlogin" method="post" action="/upload3" >
+                    <h2> Admin Login</h2>
+                    <div class="inputbox"> <input type="text" id="email" name="email" >
+                        <label>Username</label>
+                    </div>
+                    <div class="inputbox">  <input type="password" id="password" name="password" >
+                        <label>Password</label>
+                    </div>
+
+                    <div class="forget"> 
+                     <button type="submit" id="log" >Log In</button></div>
+                    
+                </form>
+                <div class="register">
+                    <p>Don't have an account? <a href="adminreg.html">Sign Up</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("log").addEventListener("click", function (event) {
+                event.preventDefault(); // Prevent form submission
+                
+                validateForm();
+                document.getElementById("adlogin").submit();
+            });
+        });
+
+        function validateForm() {
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+            
+
+            var emailPattern = /^[a-zA-Z]+$/; // Basic email pattern
+            var passwordPattern = /^[A-Z].{5,}[!@#$%^&*]/; // Password pattern: first letter capital, at least 6 characters with one special character
+
+            if (!emailPattern.test(email)) {
+                alert("Please enter a valid username.");
+                return false;
+            }
+
+            var passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+            if (!passwordRegex.test(password)) {
+                alert("Password must start with a capital letter, be 6 digits long, and contain at least one special character.");
+                return false;
+            }
+
+            
+
+            // Login successful
+            alert("Login successful!");
+            return true;
+        }
+    </script>
+
+</body>
+
+</html>

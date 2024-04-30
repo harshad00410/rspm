@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Admin Registration Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="adminreg.css" />
+    
+</head>
+<body>
+    <div class="container">
+        <h1 class="form-title">Admin Registration</h1>
+        <form action="adminlogin.html"  >
+            <div class="main-user-info">
+                <div class="user-input-box">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter Username" required>
+                </div>
+                <div class="user-input-box">
+                    <label for="phoneNumber">Phone Number</label>
+                    <input type="number" id="phoneNumber" name="phoneNumber" placeholder="Enter Phone Number" required>
+                </div>
+                <div class="user-input-box">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter Password" required>
+                </div>
+                <div class="user-input-box">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                </div>
+            </div>
+            <div class="form-submit-btn">
+                <input type="submit" value="Register" id="regi">
+            </div>
+            
+            
+        </form>
+        <br>
+        <div style="text-align:center;"><a href="adminlogin.html"><button style="padding:5px;">Back To Login</button></a></div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("regi").addEventListener("click", function (event) {
+                event.preventDefault(); // Prevent form submission
+                return validateForm();
+            });
+        });
+
+        function validateForm() {
+            var username = document.getElementById("username").value;
+            var phoneNumber = document.getElementById("phoneNumber").value;
+            var password = document.getElementById("password").value;
+            var confirmPassword = document.getElementById("confirmPassword").value;
+
+            var usernamePattern = /^[a-zA-Z]+$/; // Username pattern: only characters
+            var passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/; // Password pattern: at least one uppercase letter, one digit, one special character, and minimum 6 characters
+
+            if (!usernamePattern.test(username)) {
+                alert("Username should contain only characters.");
+                return false;
+            }
+
+            if (phoneNumber.length !== 10) {
+                alert("Phone number must be 10 digits.");
+                return false;
+            }
+
+            if (!passwordPattern.test(password)) {
+                alert("Password must start with a capital letter, have at least 6 characters, and contain at least one special character.");
+                return false;
+            }
+
+            if (password !== confirmPassword) {
+                alert(" Passwords do not match with confirm Password, please check");
+                return false;
+            }
+
+            // Registration successful
+            alert("Registration successful!");
+            return true;
+        }
+    </script>
+</body>
+</html>

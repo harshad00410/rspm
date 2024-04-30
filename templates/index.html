@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Road surveillance Pothole Measurement</title>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y +gLIBOVD591QIYicR65iaqukzvf/nwasFenqhPay5w/913mVM2hMDcnK10nMGCdVK +iQrJ71zPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    /> -->
+    <link rel="stylesheet" href="{{url_for('static',filename='external.css')}}" />
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}" />
+     
+
+
+</head>
+
+<body>
+    <header>
+        <div class="navbar">
+            <!-- <div class="logo"><a href="#">web dev creative</a></div> -->
+            <ul class="links">
+                <div><li><a href="/static/final about.html" id="x1">ABOUT</a></li>
+                    <li><a href="static/help.html" id="x2">HELP</a></li>
+                </div>
+                <div>
+                    <li> <a href="/static/userd.html" class="action_btn1">Check complaint</a></li>
+                <li> <a href="/static/adminlogin.html" class="action_btn">Admin login</a></li>
+                </div>
+                
+                <!-- <li><a href="index2.html" id="x3">COMPLAINTS</a></li> -->
+            </ul>
+           
+           
+        </div>
+        
+    </header>
+    
+
+    <div class="p1">
+
+        <br>
+        <h1>Road Surveillance Pothole Measurement</h1>
+    </div>
+    <div class="p2">
+        
+         <div class="container">
+       
+        
+                <form id="myForm" action="/upload" method="post" enctype="multipart/form-data" onsubmit="return validateForm()" >
+                    <div class="main-user-info">
+                        <div class="user-input-box">
+                            <input type="hidden" id="lat" name="lat">
+                            <input type="hidden" id="long" name="long">
+                            <Label for="un"><h4>Name</h4></Label>
+                            <input type="Text" id="un" placeholder="Enter your name" name="un">
+                        </div>
+                        <div class="user-input-box">
+                            <Label for="mo"><h4>Mobile Number</h4></Label>
+                            <input type="number" id="mo" placeholder="Mobile Number " name="mo" min="0">
+                        </div>
+                        <div class="user-input-box">
+                            <Label for="file1"><h4>Pothole image</h4></Label>
+                            <input type="file" capture="user" id="file1" accept="image/*" name="file" >
+                        </div>
+                        <div class="user-input-box">  
+                            <Label for="complaint"><h4>Complaint</h4></Label> 
+                            <textarea name="complaint" id="complaint" rows="2" cols="20" placeholder="write Complaints [optional]" style="resize: vertical;"></textarea>   <br>
+                        </div>
+
+                    </div>
+                    
+                    <!-- <p id="demo1" ></p> -->
+                    <div class="form-submit-btn">
+                        <input type="submit" id="submitBtn" ></input>
+                    </div>
+            <!-- <br><br>
+            <input type="submit" /> -->
+            <br><br>
+        </form>
+    </div>
+</div>
+    <script>
+        const x = document.getElementById("demo");
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function showPosition(position) {
+  let lat = position.coords.latitude;
+  let lon =position.coords.longitude;
+  let img_url = "static/location.jpeg";
+
+  document.getElementById("lat").value = lat;
+  document.getElementById("long").value = lon;
+//   document.getElementById("demo1").innerHTML = "<a href='https://www.google.com/maps/place/'"+lat+"N +"+lon+"'E/@'"+lat+","+lon+"'?entry=ttu target='_blank'>"+"<img src='"+img_url+"' height='"+50+"' width='"+50+"' ></a>";
+  document.getElementById("submitBtn").disabled = false;
+  submitForm();
+}
+         
+
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    document.getElementById("coordinates").innerHTML = "User denied the request for Geolocation.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    document.getElementById("coordinates").innerHTML = "Location information is unavailable.";
+                    break;
+                case error.TIMEOUT:
+                    document.getElementById("coordinates").innerHTML = "The request to get user location timed out.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    document.getElementById("coordinates").innerHTML = "An unknown error occurred.";
+                    break;
+            }
+        }
+    </script>
+    <script>
+        function validateForm() {
+            var name = document.getElementById("un").value.trim();
+            var mobile = document.getElementById("mo").value.trim();
+            var file = document.getElementById("file1").value;
+            var usernamePattern = /^[a-zA-Z]+$/;
+            if (name === "") {
+                alert("Please enter your name.");
+                return false;
+            }
+            if (!usernamePattern.test(name)) {
+                alert("Please enter a valid username.");
+                return false;
+            }
+
+            if (mobile === "" || isNaN(mobile)) {
+                alert("Please enter a valid mobile number.");
+                return false;
+            }
+            if (mobile.length !== 10) {
+                alert("Phone number must be 10 digits.");
+                return false;
+            }
+
+            if (file === "") {
+                alert("Please select an image.");
+                return false;
+            }
+            getLocation();
+            return false; // Form is valid, continue with submission
+
+        }
+        function submitForm() {
+            document.getElementById("myForm").submit();
+            alert("Data submitted successfully");
+            
+         // Submit the form programmatically
+        return true;
+    }
+    </script>
+
+
+
+</body>
+
+</html>

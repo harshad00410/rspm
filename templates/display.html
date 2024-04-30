@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Complaints</title>
+    <style>
+        table,td,th{
+            border: 2px solid ;
+            padding:10px;
+            text-align: center;
+            overflow: auto;
+        }
+        label{
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Set the container (div) to fill the entire viewport */
+        .table1 {
+            width: 100%;
+            height: 100vh; /* Set height to 100% of the viewport height */
+        }
+        #delbtn{
+            float:right;
+            margin-right:8px;
+        }
+        
+    </style>
+     
+</head>
+<body>
+    <div class="table1">
+        <label for="sort-option">Sort by:</label>
+        <select id="sort-option" onchange="sortTable()">
+            <option value="name">Name</option>
+            <option value="phone">Phone Number</option>
+            <option value="date">Date</option>
+        </select>
+        <form  style="display: inline;" method="post" action="/upload3"><input type="submit" value="Back"></form>
+        
+        <input type="button" id="delbtn"  onclick="cbsubmitform()" value="delete">
+        <br><br>
+        
+        
+    <table id="complaints-table">
+       <tr>
+            <th>Name</th>
+            <th>Mobile Number</th>
+            <th>Date</th>
+            <th>Complaint</th>
+            <th>Width</th>
+            <th>Height</th>
+            <th>Area cm^2</th>
+            <th>Action</th>
+            <th>Location of pothole</th>
+            <th>Select All:<input type="checkbox" id="selectAllCheckbox" name="selectAllCheckbox"></th>
+       </tr>
+        <!-- Group data by ID -->
+        
+        {% set grouped_data = {} %}
+
+        {% for row in data %}
+            {% set id_ = row[0] %}
+            {% if id_ not in grouped_data %}
+                {% set _ = grouped_data.update({id_: []}) %}
+            {% endif %}
+            {% set _ = grouped_data[id_].append(row) %}
+        {% endfor %}
+
+        {% for _, rows in grouped_data.items() %}
+            {% for row in rows %}  
+            
+                <tr> 
+                    {% if loop.index == 1 %}
+                        <td rowspan="{{ rows|length }}">{{ row[1] }}</td>
+                        <td rowspan="{{ rows|length }}">{{ row[2] }}</td>
+                        <td rowspan="{{ rows|length }}">{{ row[7] }}</td>
+                        <td rowspan="{{ rows|length }}">{{ row[3] }}</td>
+                    {% endif %}
+                    <td>{{  row[10] }}</td>
+                    <td>{{  row[11] }}</td>
+                    <td>{{  row[12] }}</td>
+                    {% if loop.index == 1 %}
+                    
+                        <td rowspan="{{ rows|length }}" >
+                        
+                            <h2>Complaint Status :{{row[8] if row else 'N/A'}}</h2>
+                        
+                        
+                            <form id="statusForm" action="/upload6" method="POST">
+                                <input type="hidden" name="sid" value="{{ row[0] if row else 'N/A' }}">
+                                <input type="hidden" name="delete">
+                                <input id="mark" type="radio" name="status" value="Seen">  
+                                <label for="Mark">Mark</label>
+                                <input id="Solved" type="radio" name="status" value="Solved">
+                                <label for="Solved">Solved</label>
+                                <input id="submitButton"  type="submit" value="Add" >
+                            </form>
+                            
+                        </td> 
+                        <td rowspan="{{ rows|length }}"><a href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d752515.2121596494!2d{{row[5]}}!3d{{row[4]}}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjEcMzUuNTciUzMwJzEwLjQiRQ!5e0!3m2!1sen!2sin!4v1646967282481!5m2!1sen!2sin"
+                            target="iframe_a"><img src="static/uploads/{{ row[6] }}" alt="Location Image" width="100" height="100"></a></td>
+                        <td rowspan="{{ rows|length }}">
+                            <form id="cbform" action="/upload6" method="post" >
+                                <input type="hidden" name="status">
+                                <input type="hidden" name="sid">
+                                <input type="checkbox" class="checkbox" name="delete" value="{{row[0] if row else 'N/A' }}">
+                                
+                            </form>
+                        </td>
+                    {% endif %}
+                    
+                    
+                    
+            
+                </tr>
+            {% endfor %}
+        {% endfor %}
+    
+    </table>
+    </div>
+
+    
+    <iframe height="200" width="300"  name="iframe_a" title="Iframe Example"   allowfullscreen></iframe>
+    <script>
+       function sortTable() {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            var sortOption = document.getElementById("sort-option").value;
+            table = document.getElementById("complaints-table");
+            switching = true;
+            // Set the sorting direction to ascending:
+            dir = "asc"; 
+            /* Make a loop that will continue until
+            no switching has been done: */
+            while (switching) {
+                // Start by saying: no switching is done:
+                switching = false;
+                rows = table.rows;
+                /* Loop through all table rows (except the
+                first, which contains table headers): */
+                for (i = 1; i < (rows.length - 1); i++) {
+                    // Start by saying there should be no switching:
+                    shouldSwitch = false;
+                    /* Get the two elements you want to compare,
+                    one from current row and one from the next: */
+                    if (sortOption === 'date') {
+                        x = new Date(rows[i].getElementsByTagName("TD")[6].innerHTML);
+                        y = new Date(rows[i + 1].getElementsByTagName("TD")[6].innerHTML);
+                    } else {
+                        x = rows[i].getElementsByTagName("TD")[sortOption === 'name' ? 0 : 1];
+                        y = rows[i + 1].getElementsByTagName("TD")[sortOption === 'name' ? 0 : 1];
+                    }
+                    /* Check if the two rows should switch place,
+                    based on the direction, asc or desc: */
+                    if (dir == "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            // If so, mark as a switch and break the loop:
+                            shouldSwitch= true;
+                            break;
+                        }
+                     } 
+                     else if (dir == "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            // If so, mark as a switch and break the loop:
+                            shouldSwitch= true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    /* If a switch has been marked, make the switch
+                    and mark that a switch has been done: */
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    // Each time a switch is done, increase this count by 1:
+                    switchcount ++; 
+                } else {
+                    /* If no switching has been done AND the direction is "asc",
+                    set the direction to "desc" and run the while loop again. */
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get reference to the submit button and radio buttons
+        var submitButton = document.getElementById("submitButton");
+        var markRadio = document.getElementById("mark1");
+        var solvedRadio = document.getElementById("solved1");
+        
+        // Attach event listeners to radio buttons
+        markRadio.addEventListener("click", function() {
+            submitForm("Seen");
+        });
+        
+        solvedRadio.addEventListener("click", function() {
+            submitForm("Solved");
+        });
+    
+        // Function to submit form with selected status
+        function submitForm(status) {
+            // Set the value of the 'status' input field
+            document.querySelector('input[name="status"]').value = status;
+            
+            // Submit the form
+            document.getElementById("statusForm").submit();
+        }
+        
+        // Attach event listener to submit button (optional)
+        submitButton.addEventListener("click", function() {
+            // You can add additional logic here if needed
+            // For example, validation before submission
+        });
+    });
+
+    </script>
+    <script>
+        // // Function to submit form for deleting rows
+        function cbsubmitform() {
+            document.getElementById("cbform").submit();
+        
+        }
+        // // // Function to handle deletion of selected rows
+        // document.getElementById("selectAllCheckbox").addEventListener("change", function() {
+        //     // Get all checkboxes
+        //     var checkboxes = document.getElementsByClassName("checkbox");
+            
+        //     // Array to store IDs of rows to be deleted
+        //     var deleteIds = [];
+    
+        //     // Iterate through checkboxes
+        //     for (var i = 0; i < checkboxes.length; i++) {
+        //         if (checkboxes[i].checked) {
+        //             // If checkbox is checked, store the corresponding ID
+        //             deleteIds.push(checkboxes[i].value);
+        //         }
+        //     }
+    
+           
+        // });}
+    
+        // Event listener for select all checkbox
+        document.getElementById("selectAllCheckbox").addEventListener("change", function() {
+            var checkboxes = document.getElementsByClassName("checkbox");
+            for (var i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].checked = this.checked;
+            }
+        });
+    </script>
+    
+</body>
+</html>
